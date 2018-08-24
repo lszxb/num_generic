@@ -26,11 +26,13 @@ pub trait Nat {
     fn how() -> u32;
 }
 impl Nat for Z {
+    #[inline]
     fn how() -> u32 {
         0
     }
 }
 impl<T: Nat> Nat for S<T> {
+    #[inline]
     fn how() -> u32 {
         T::how() + 1
     }
