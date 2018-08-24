@@ -1,16 +1,28 @@
+#[macro_use]
+mod opt;
+
+use opt::*;
+
 fn main() {
-    println!("Hello, world!");
     println!("1+2={}", <
-             <S<Z> as Add<S<S<Z>>>>::Ret
+             //<S<Z> as Add<S<S<Z>>>>::Ret
+             //opt!(S<Z>, Add, S<S<Z>>)
+             add!(S<Z>, S<S<Z>>)
              as Nat>::how());
     println!("3-2={}", <
-             <S<S<S<Z>>> as Del<S<S<Z>>>>::Ret
+             //<S<S<S<Z>>> as Del<S<S<Z>>>>::Ret
+             del!(S<S<S<Z>>>, S<S<Z>>)
+             as Nat>::how());
+    println!("3*2={}", <
+             //<S<S<S<Z>>> as Mul<S<S<Z>>>>::Ret
+             mul!(S<S<S<Z>>>, S<S<Z>>)
              as Nat>::how());
 }
 
-struct Z;
-struct S<T>(T);
-trait Nat {
+pub struct Z;
+pub struct S<T>(T);
+
+pub trait Nat {
     fn how() -> u32;
 }
 impl Nat for Z {
@@ -22,27 +34,5 @@ impl<T: Nat> Nat for S<T> {
     fn how() -> u32 {
         T::how() + 1
     }
-}
-
-trait Add<T: Nat> : Nat {
-    type Ret;
-}
-impl<T: Nat> Add<Z> for T {
-    type Ret = T;
-}
-impl<T: Nat, U: Nat> Add<S<T>> for U 
-    where S<U>: Add<T>
-{
-    type Ret = <S<U> as Add<T>>::Ret;
-}
-
-trait Del<T: Nat> : Nat {
-    type Ret;
-}
-impl<T: Nat> Del<Z> for T {
-    type Ret = T;
-}
-impl<T: Nat, U: Nat + Del<T>> Del<S<T>> for S<U> {
-    type Ret = <U as Del<T>>::Ret;
 }
 
