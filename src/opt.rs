@@ -33,7 +33,8 @@ impl<T: Nat> Add<Z> for T {
 impl<T: Nat, U: Nat> Add<S<T>> for U 
     where S<U>: Add<T>
 {
-    type Ret = <S<U> as Add<T>>::Ret;
+    // type Ret = <S<U> as Add<T>>::Ret;
+    type Ret = add!(S<U>, T);
 }
 
 pub trait Del<T: Nat> : Nat {
@@ -43,7 +44,8 @@ impl<T: Nat> Del<Z> for T {
     type Ret = T;
 }
 impl<T: Nat, U: Nat + Del<T>> Del<S<T>> for S<U> {
-    type Ret = <U as Del<T>>::Ret;
+    // type Ret = <U as Del<T>>::Ret;
+    type Ret = del!(U, T);
 }
 
 pub trait Mul<T: Nat> : Nat {
@@ -55,5 +57,6 @@ impl<T: Nat> Mul<Z> for T {
 impl<T: Nat, U: Nat + Mul<T>> Mul<S<T>> for U
     where <U as Mul<T>>::Ret: Add<U>
 {
-    type Ret = <<U as Mul<T>>::Ret as Add<U>>::Ret;
+    // type Ret = <<U as Mul<T>>::Ret as Add<U>>::Ret;
+    type Ret = add!(mul!(U, T), U);
 }
