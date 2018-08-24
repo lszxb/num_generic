@@ -1,0 +1,6 @@
+[package]
+name = "num_generic"
+version = "0.1.0"
+authors = ["lszxb <798971857@qq.com>"]
+
+[dependencies]
