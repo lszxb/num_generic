@@ -55,7 +55,7 @@ impl<T: Nat> Mul<Z> for T {
     type Ret = Z;
 }
 impl<T: Nat, U: Nat + Mul<T>> Mul<S<T>> for U
-    where <U as Mul<T>>::Ret: Add<U>
+    where mul!(U, T): Add<U>
 {
     // type Ret = <<U as Mul<T>>::Ret as Add<U>>::Ret;
     type Ret = add!(mul!(U, T), U);
